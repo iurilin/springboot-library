@@ -2,6 +2,9 @@ package com.iuri.library.entitiesDTO;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VolumeInfoDTO {
 	
 	private String title;
@@ -10,6 +13,7 @@ public class VolumeInfoDTO {
 	private String publishedDate;
 	private String description;
 	private ImageLinksDTO imageLinks;
+	
 	public String getTitle() {
 		return title;
 	}

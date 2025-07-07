@@ -7,16 +7,15 @@ import com.iuri.library.entities.VolumeInfoWrapper;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookSearchResultDTO {
-	
-	private List<VolumeInfoWrapper> item;
 
-	public List<VolumeInfoWrapper> getItem() {
-		return item;
+	private List<VolumeInfoWrapper> items;
+
+	public List<VolumeInfoWrapper> getItems() {
+		return items;
 	}
 
-	public void setItem(List<VolumeInfoWrapper> item) {
-		this.item = item;
+	public void setItems(List<VolumeInfoWrapper> items) {
+		this.items = items;
 	}
-	
-	
+
 }
