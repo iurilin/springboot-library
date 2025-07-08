@@ -1,12 +1,14 @@
 package com.iuri.library.entitiesDTO;
 
+import java.util.List;
+
 import com.iuri.library.entities.BookStatus;
 
 public class AddBookDTO {
 	
 	private String title;
 	
-    private String authors;
+    private List<String> authors;
     
     private String description;
     
@@ -22,11 +24,11 @@ public class AddBookDTO {
 		this.title = title;
 	}
 
-	public String getAuthors() {
+	public List<String> getAuthors() {
 		return authors;
 	}
 
-	public void setAuthors(String authors) {
+	public void setAuthors(List<String> authors) {
 		this.authors = authors;
 	}
 
