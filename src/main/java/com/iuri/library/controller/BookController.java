@@ -1,13 +1,11 @@
 package com.iuri.library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +17,8 @@ import com.iuri.library.entitiesDTO.BookSearchResultDTO;
 import com.iuri.library.entitiesDTO.UpdateBookStatusDTO;
 import com.iuri.library.repositories.BookRepository;
 import com.iuri.library.service.BookService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("api/books")
@@ -36,21 +36,24 @@ public class BookController {
 		return ResponseEntity.ok(result);
 	}
 
-	@PostMapping("/add")
-	public ResponseEntity<Book> addBookToLibrary(@RequestBody AddBookDTO bookDTO) {
-		Book newBook = new Book();
-		newBook.setTitle(bookDTO.getTitle());
+	@Transactional
+	public Book addBookToLibrary(AddBookDTO bookRequest) {
+	    
+	    Book newBook = new Book();
+	    newBook.setTitle(bookRequest.getTitle());
+	    
+	    if (bookRequest.getAuthors() != null && !bookRequest.getAuthors().isEmpty()) {
+	        newBook.setAuthors(String.join(", ", bookRequest.getAuthors()));
+	    } else {
+	        newBook.setAuthors("Autor desconhecido");
+	    }
 
-		if (bookDTO.getAuthors() != null) {
-			newBook.setAuthors(String.join(", ", bookDTO.getAuthors()));
-		}
+	    newBook.setDescription(bookRequest.getDescription());
+	    newBook.setThumbnailUrl(bookRequest.getThumbnailUrl());
+	    
+	    newBook.setStatus(bookRequest.getStatus());
 
-		newBook.setDescription(bookDTO.getDescription());
-		newBook.setThumbnailUrl(bookDTO.getThumbnailUrl());
-		newBook.setStatus(bookDTO.getStatus());
-
-		Book savedBook = bookRepository.save(newBook);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
+	    return bookRepository.save(newBook);
 	}
 
 	@PatchMapping("/{id}/status")
